@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Historical Trekking Data</h2>
+{% if historical_treks %}
+  {% for item in historical_treks %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">{{ item.trek.name }}</h5>
+        <p class="card-text mb-1"><strong>Dates:</strong> {{ item.trek.start_date.strftime('%Y-%m-%d') if item.trek.start_date else 'N/A' }} to {{ item.trek.end_date.strftime('%Y-%m-%d') if item.trek.end_date else 'N/A' }}</p>
+        <p class="card-text mb-1"><strong>Status:</strong> {{ item.trek.status }}</p>
+        <p class="card-text mb-1"><strong>Assigned Staff:</strong> {{ item.assigned_staff.username if item.assigned_staff else 'Unassigned' }}</p>
+        <p class="card-text mb-1"><strong>Participants:</strong> {{ item.participant_count }}</p>
+        <ul class="list-group list-group-flush mt-2">
+          {% for booking in item.bookings %}
+            <li class="list-group-item">{{ booking.user.username }} ({{ booking.status }})</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  {% endfor %}
+{% else %}
+  <p>No historical trekking data available.</p>
+{% endif %}
+{% endblock %}
